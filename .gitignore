@@ -1,0 +1,21 @@
+# dependencies
+/server/development/node_modules
+/server/development/.pnp
+/server/development/.pnp.js
+
+# testing
+/server/development/coverage
+
+# production
+/server/development/build
+
+# misc
+/server/development/.DS_Store
+/server/development/.env.local
+/server/development/.env.development.local
+/server/development/.env.test.local
+/server/development/.env.production.local
+
+/server/development/npm-debug.log*
+/server/development/yarn-debug.log*
+/server/development/yarn-error.log*
