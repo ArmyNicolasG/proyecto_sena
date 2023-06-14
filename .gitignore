@@ -3,6 +3,7 @@
 /server/development/.pnp
 /server/development/.pnp.js
 /server/backend/node_modules
+
 # testing
 /server/development/coverage
 
@@ -19,3 +20,6 @@
 /server/development/npm-debug.log*
 /server/development/yarn-debug.log*
 /server/development/yarn-error.log*
+
+# variables
+/server/backend/.env
