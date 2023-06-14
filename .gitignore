@@ -2,7 +2,7 @@
 /server/development/node_modules
 /server/development/.pnp
 /server/development/.pnp.js
-
+/server/backend/node_modules
 # testing
 /server/development/coverage
 
