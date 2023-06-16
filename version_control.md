@@ -4,6 +4,6 @@ Here, committed versions will be documented to make a trace of the changes at ev
 
 |   Version   |     Type            |  Description                                                                      |
 | :---:       |    :----:           |     :---:                                                                         |
-| **0.1.0**   | Server-app          | Added insert to database function for providers table.                            |
-| **0.1.1**   | Server-app          | Added insert and select functions to database module on server.                   |
-| **0.1.2**   | Documentation       | Some markdown settings.                                                           |
+| **v0.1.0**   | Server-app          | Added insert to database function for providers table.                            |
+| **v0.1.1**   | Server-app          | Added insert and select functions to database module on server.                   |
+| **v0.1.2**   | Documentation       | Some markdown settings.                                                           |
