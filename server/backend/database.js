@@ -14,7 +14,7 @@ connection.connect(function(err) {
 });
 
 //This function receives the table of the name and an Object where keys are the fields of the table and values are the data.
-async function insertIntoTable(table, values){
+const insertIntoTable = (table, values) => {
     
     let query = `INSERT INTO ${process.env.DB_NAME}.${table} SET`;
     for (const [field, value] of Object.entries(values)) {
@@ -22,7 +22,7 @@ async function insertIntoTable(table, values){
     }
     query.slice(0, -1);
 
-    await connection.query(query, (err) => { if (err) throw err; });
+    connection.query(query, (err) => { if (err) throw err; });
 }
 
 /*
@@ -50,10 +50,30 @@ async function selectFromTable(table, fields, conditions){
             });
         });
         
-        return results; // Return the results outside the callback function
+        return results;
         
       } catch (err) { throw err; }
+}
+
+function updateTable(table, fields, conditions){
+
+    query = `UPDATE ${process.env.DB_NAME}.${table} SET`;
+    for (const [field, value] of Object.entries(fields)) {
+        query += ` ${field} = ${MYSQL.escape(value)},`;
     }
+    query = query.slice(0, -1);
+
+    if(conditions){
+        query += ` WHERE`;
+        for (const [field, value] of Object.entries(conditions)) {
+            query += ` ${field} = ${MYSQL.escape(value)},`;
+        }
+        query = query.slice(0, -1);
+    }
+
+    connection.query(query, (err) => { console.error(err) });
+
+}
     
 
-module.exports = { insertIntoTable, selectFromTable };
+module.exports = { insertIntoTable, selectFromTable, updateTable };
