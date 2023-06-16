@@ -13,7 +13,8 @@ Added insert and select functions to database module on server.
 ######  June 16, 2023. 12:29 PM.
 Some markdown settings.
 
-|   Version   |     Type    |  Description  |
-| :---:       |    :----:   |     :---:     |
-| Header      | Title       | Here's this   |
-| Paragraph   | Text        | And more      |
+|   Version   |     Type        |  Description                                                                      |
+| :---:       |    :----:       |     :---:                                                                         |
+| **0.1.0**   | Server          | Added insert to database function for providers table.                            |
+| **0.1.1**   | Server          | Added insert and select functions to database module on server.                   |
+| **0.1.2**   | Documentation   | Some markdown settings.                                                           |
