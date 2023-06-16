@@ -1,5 +1,5 @@
 const express = require("express");
-const database = require("./database.js");
+const { insertProvider } = require("./database.js");
 require('dotenv').config();
 const app = express();
 
@@ -22,7 +22,13 @@ app.post('/new-provider', (req, res) => {
         || (isNaN(parseInt(provider.phone)) == true ) 
     ){ res.status(406).send(); }
 
+    else {
+        insertProvider(providerInfo)
+    }
+
 });
+
+
 
 app.listen(process.env.HTTP_SERVER_PORT, () => {
     console.log(`Listening at ${process.env.HTTP_SERVER_PORT} port.`);
