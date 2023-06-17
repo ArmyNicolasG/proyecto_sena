@@ -41,20 +41,10 @@ app.post('/providers/edit-provider', (req, res) => {
 // ARTICLES.
 app.post('/articles/new', (req, res) =>{
 
-    if (req.body.name.length >= 1) {
-        insertIntoTable('articulos', { nombre: req.body.name });
-    }
-    else {
-        res.status(400).send();
-    }
+    if (req.body.name.length >= 1 && req.body.name.length <= 64) { insertIntoTable('articulos', { nombre: req.body.name }); }
+    else { res.status(400).send(); }
 
 });
-const date = new Date();
-        let requestTime = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-        insertIntoTable('pedidos', { id_proveedor: 1, fecha: requestTime})
-        .then( result => {
-            console.log(result);
-        });
 
 // ORDERS.
 app.post('/orders/new', (req, res) => {
@@ -65,19 +55,16 @@ app.post('/orders/new', (req, res) => {
         insertIntoTable('pedidos', { id_proveedor: req.body.providerID, fecha: requestTime})
         .then( orderID => {
             req.body.articles.forEach((article) => {
-
                 insertIntoTable('detalle_pedidos', { 
                     id_pedido : orderID,
                     id_articulo : article.articleID,
                     cantidad : article.quantity,
                     costo : article.amount
                 });
-
             });
-        });
-        
+        });   
     }
-    
+
     else { res.status(400).send(); }
 
 });

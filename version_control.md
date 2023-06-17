@@ -9,3 +9,4 @@ Here, committed versions will be documented to make a trace of the changes at ev
 | **v0.1.2**   | Documentation       | Some markdown settings.                                                                                                                      | 6/16/2023 12:30 PM     |
 | **v0.1.3**   | Server-App          | Finished "create" and "update" provider information functions on API.  Added "update table" dynamic function on database module.             | 6/16/2023 01:30 PM     |
 | **v0.1.4**   | Server-App          | Added "new order" module on API.                                                                                                             | 6/16/2023 01:30 PM     |
+| **v0.2.0**   | Server-App          | Minor changes.                                                                                                                               | 6/16/2023 01:30 PM     |
