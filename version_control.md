@@ -11,3 +11,4 @@ Here, committed versions will be documented to make a trace of the changes at ev
 | **v0.1.4**   | Server-App          | Added "new order" module on API.                                                                                                             | 6/16/2023 09:40 PM     |
 | **v0.2.0**   | Server-App          | Minor changes.                                                                                                                               | 6/16/2023 09:45 PM     |
 | **v0.2.1**   | Server-App          | Some bug fixes.                                                                                                                              | 6/16/2023 09:45 PM     |
+| **v0.2.2**   | Server-App          | Added function to check when an order arrives and modify its register.                                                                       | 6/16/2023 09:45 PM     |
