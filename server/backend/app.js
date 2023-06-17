@@ -8,7 +8,7 @@ const app = express();
 //     //Here, dynamic HTML page will be sent to front-end each time someone accesses the app, this is the main route.
 // });
 
-// Providers
+// PROVIDERS.
 app.post('/providers/new-provider', (req, res) => {
 
     if((req.body.name.length > 64 || req.body.name == "")
@@ -38,8 +38,49 @@ app.post('/providers/edit-provider', (req, res) => {
     }
 });
 
-//Orders
+// ARTICLES.
+app.post('/articles/new', (req, res) =>{
 
+    if (req.body.name.length >= 1) {
+        insertIntoTable('articulos', { nombre: req.body.name });
+    }
+    else {
+        res.status(400).send();
+    }
+
+});
+const date = new Date();
+        let requestTime = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+        insertIntoTable('pedidos', { id_proveedor: 1, fecha: requestTime})
+        .then( result => {
+            console.log(result);
+        });
+
+// ORDERS.
+app.post('/orders/new', (req, res) => {
+    
+    if (req.body.providerID >= 1 && isNaN(parseInt(providerID)) == false && req.body.articles.length >= 1 ){
+        const date = new Date();
+        let requestTime = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+        insertIntoTable('pedidos', { id_proveedor: req.body.providerID, fecha: requestTime})
+        .then( orderID => {
+            req.body.articles.forEach((article) => {
+
+                insertIntoTable('detalle_pedidos', { 
+                    id_pedido : orderID,
+                    id_articulo : article.articleID,
+                    cantidad : article.quantity,
+                    costo : article.amount
+                });
+
+            });
+        });
+        
+    }
+    
+    else { res.status(400).send(); }
+
+});
 
 
 app.listen(process.env.HTTP_SERVER_PORT, () => {
