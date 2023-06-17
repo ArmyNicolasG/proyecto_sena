@@ -50,7 +50,7 @@ async function selectFromTable(table, fields, conditions){
     }
     else if(table && fields){ query = `SELECT ${fields.join(', ')} WHERE ${process.env.DB_NAME}.${table}` }
     else{ console.error("Missing parameters on query."); return; }
-    console.log(query);
+
     try {
         const results = await new Promise((resolve, reject) => {
           connection.query(query, (err, result) => {

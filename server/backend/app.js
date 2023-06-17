@@ -1,9 +1,11 @@
 const express = require("express");
+var bodyParser = require("body-parser");
 const { insertIntoTable, selectFromTable, updateTable } = require("./database.js");
 require('dotenv').config();
 const app = express();
-
-
+app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 // app.get('/', (req, res) => {
 //     //Here, dynamic HTML page will be sent to front-end each time someone accesses the app, this is the main route.
 // });
@@ -13,11 +15,11 @@ app.post('/providers/new-provider', (req, res) => {
 
     if((req.body.name.length > 64 || req.body.name == "")
         || (req.body.phone.length > 13 || req.body.phone == undefined)
-        || (isNaN(parseInt(provider.phone)) == true ) 
+        || (isNaN(parseInt(req.body.phone)) == true ) 
     ){ res.status(406).send(); }
 
     else {
-        insertIntoTable({ name: req.body.name, phone: req.body.phone, email: req.phone.email });
+        insertIntoTable('proveedores', { nombre: req.body.name, telefono: parseInt(req.body.phone), email: req.body.email });
         res.status(201).send();
     }
 });
@@ -27,7 +29,7 @@ app.post('/providers/edit-provider', (req, res) => {
     if((req.body.name.length > 64 || req.body.name.length == 0) || (req.body.phone.length > 13 || req.body.phone.length == 0 || isNaN(parseInt(req.body.phone)) == true) || (req.body.email.length > 255 || req.body.email.length == 0)){
         res.status(406).send();
     }
-    else if (isNaN(req.providerID) == false && req.providerID.length >= 1){
+    else if (isNaN(parseInt(req.body.providerID)) == false && req.body.providerID.length >= 1){
         selectFromTable('proveedores', ['id_proveedor'], { "id_proveedor" : req.body.providerID})
         .then( data => {
             if(data.length = 1){
@@ -35,20 +37,22 @@ app.post('/providers/edit-provider', (req, res) => {
                 res.status(201).send();
             } else { res.status(400).send(); }
         });
-    }
+    } else { res.status(406).send(); }
+
 });
 
 // ARTICLES.
 app.post('/articles/new', (req, res) =>{
 
     if (req.body.name.length >= 1 && req.body.name.length <= 64) { insertIntoTable('articulos', { nombre: req.body.name }); }
-    else { res.status(400).send(); }
+    else { res.status(406).send(); }
 
 });
 
 // ORDERS.
 app.post('/orders/new', (req, res) => {
     
+    console.log(req.body);
     if (req.body.providerID >= 1 && isNaN(parseInt(providerID)) == false && req.body.articles.length >= 1 ){
         const date = new Date();
         let requestTime = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
