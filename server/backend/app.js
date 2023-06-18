@@ -7,10 +7,6 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// app.get('/', (req, res) => {
-//     //Here, dynamic HTML page will be sent to front-end each time someone accesses the app, this is the main route.
-// });
-
 const getExactTimeFormat = () => {
     const date = new Date();
     return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
@@ -35,7 +31,7 @@ app.post('/providers/edit-provider', (req, res) => {
     else if (isNaN(parseInt(req.body.providerID)) == false && req.body.providerID.length >= 1){
         selectFromTable('proveedores', ['id_proveedor'], { "id_proveedor" : req.body.providerID})
         .then( data => {
-            if(data.length = 1){
+            if(data.length == 1){
                 updateTable('proveedores', { nombre: req.body.name, telefono: req.body.phone, email: req.body.email }, { id_proveedor : req.body.providerID });
                 res.status(201).send();
             } else { res.status(406).send(); }
@@ -70,19 +66,46 @@ app.post('/orders/new', (req, res) => {
 });
 
 app.post('/orders/arrives', (req, res) => {
-
     if(isNaN(parseInt(req.body.orderID)) == false){
         selectFromTable('pedidos', ['id_pedido'], { id_pedido : req.body.orderID })
         .then( data => {
             if(data.length == 1){
-                updateTable('pedidos', { fecha_llegada : getExactTimeFormat() })
+                updateTable('pedidos', { fecha_llegada : getExactTimeFormat() }, { id_pedido: data[0].id_pedido });
                 res.status(201).send();
             } 
             else { res.status(406).send(); }
         });
     }
-
 });
+
+// SALES.
+app.post('/sales/new', (req, res) => {
+    
+    if (req.body.articles.length >= 1){
+        let total = 0;
+        req.body.articles,forEach((article) => { 
+            selectFromTable('articulos',['precio_sugerido'],{ id_articulo : article.articleID })
+            .then( data => { 
+                if(data.length == 0 || data[0].precio_sugerido == null){ res.send(406).send(); return; }
+                else { total += precio_sugerido }
+            });
+        });
+        insertIntoTable('ventas', { total: total, fecha: getExactTimeFormat()})
+        .then( orderID => {
+            req.body.articles.forEach((article) => {
+                insertIntoTable('detalle_ventas', { 
+                    id_venta : orderID,
+                    id_articulo : article.articleID,
+                    cantidad : article.quantity,
+                });
+                res.status(201).send();
+            });
+        });
+    }    
+    else { res.status(406).send(); }
+});
+
+
    
 
 app.listen(process.env.HTTP_SERVER_PORT, () => { console.log(`Listening at ${process.env.HTTP_SERVER_PORT} port.`); });
