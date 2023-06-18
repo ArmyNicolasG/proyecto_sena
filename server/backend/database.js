@@ -39,17 +39,19 @@ async function insertIntoTable (table, values) {
     fields(Array:String): The fields where you want to select data from.
     conditions(Object): WHERE statement. Keys of the object are the conditioned fields, and its key-pair value are the data of the condition (when it's equal to (=) only).
 */
-async function selectFromTable(table, fields, conditions){
+async function selectFromTable(table, fields, conditions, additionalParameters){
 
-    let query = `SELECT ${fields.join(', ')} FROM ${process.env.DB_NAME}.${table} WHERE`;
-    if(conditions && table && fields){
+    let query = `SELECT ${fields.join(', ')} FROM ${process.env.DB_NAME}.${table}`;
+    if(Object.keys(conditions).length >= 1){
+        query += ' WHERE';
         for (const [field, value] of Object.entries(conditions)) {
             query += ` ${field} = ${MYSQL.escape(value)},`;
         }
         query = query.slice(0, -1);
     }
-    else if(table && fields){ query = `SELECT ${fields.join(', ')} WHERE ${process.env.DB_NAME}.${table}` }
-    else{ console.error("Missing parameters on query."); return; }
+    if(additionalParameters){
+        additionalParameters.forEach( parameter => query += ` ${parameter}`);
+    }
 
     try {
         const results = await new Promise((resolve, reject) => {

@@ -13,6 +13,20 @@ const getExactTimeFormat = () => {
 }
 
 // PROVIDERS.
+app.get('/providers/:limit', (req, res) => {
+    if(!isNaN(parseInt(req.params.limit))){
+        selectFromTable('proveedores', ['*'], {}, [ `LIMIT ${parseInt(req.params.limit)}` ])
+        .then( data => {
+            let providers = [];
+            for(let i = 0; i < data.length; i++){
+                providers.push({ providerID: data[i].id_proveedor, name: data[i].nombre, phone: data[i].telefono, email: data[i].email }); 
+            }
+            res.json(providers).status(200);
+        });
+    }
+    else { res.status(406).send() }
+});
+
 app.post('/providers/new-provider', (req, res) => {
     if((req.body.name.length > 64 || req.body.name == "")
         || (req.body.phone.length > 13 || req.body.phone == undefined)
@@ -75,7 +89,7 @@ app.post('/orders/arrives', (req, res) => {
         .then( data => {
             if(data.length == 1){
                 updateTable('pedidos', { fecha_llegada : getExactTimeFormat() }, { id_pedido: data[0].id_pedido });
-                selectFromTable('detalle_pedidos',['id_articulo','cantidad','costo'],{ id_pedido : data[0].id_pedido })
+                selectFromTable('detalle_pedidos', ['id_articulo','cantidad','costo'], { id_pedido : data[0].id_pedido })
                 .then( data => {
                     for(let i = 0; i < data.length; i++){
                         updateTable('articulos',{ precio_sugerido : (data[i].cantidad * data[i].costo) },{ id_articulo : data[i].id_articulo })
