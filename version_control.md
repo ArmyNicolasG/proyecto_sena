@@ -13,3 +13,4 @@ Here, committed versions will be documented to make a trace of the changes at ev
 | **v0.2.1**   | Server-App          | Some bug fixes.                                                                                                                              | 06/16/2023 09:45 PM     |
 | **v0.2.2**   | Server-App          | Added function to check when an order arrives and modify its register.                                                                       | 06/17/2023 05:55 PM     |
 | **v0.3.0**   | Server-App          | Started sales module. Some bug fixes                                                                                                         | 06/18/2023 10:49 AM     |
+| **v0.3.1**   | Server-App          | Finished sales module.                                                                                                                       | 06/18/2023 12:15 PM     |
